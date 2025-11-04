@@ -103,7 +103,7 @@ class AdminController extends Controller
             'waveInfos' => $waveInfos,
             'guideInfo' => Guide::where('guide_id', $waveInfos->guide_id)->first(),
             'audioFile' => TestWave::select('test_waves.*', 'listening_audios.*')
-                ->where('wave_id', $wave_id)
+                ->where('listening_audios.wave_id', $wave_id)
                 ->join('listening_audios', 'test_waves.audio_id', '=', 'listening_audios.audio_id')
                 ->first(),
             'listeningQuestions' => TestQuestion::where('wave_id', $wave_id)
@@ -140,10 +140,12 @@ class AdminController extends Controller
 
         $manualIncrementAudioTable = count(ListeningAudio::get()) + 1;
         $manualIncrementGuideTable = count(Guide::get()) + 1;
+        $manualIncrementTestWaveTable = count(TestWave::get()) + 1;
 
         $newAudio = new ListeningAudio;
         $newAudio->audio_id = $manualIncrementAudioTable;
         $newAudio->audio_title = $audioFileName;
+        $newAudio->wave_id = $manualIncrementTestWaveTable;
 
         $newGuide = new Guide;
         $newGuide->guide_id = $manualIncrementGuideTable;
@@ -152,6 +154,7 @@ class AdminController extends Controller
         $newGuide->reading_guide = "Please input your reading guide!";
 
         $newTest = new TestWave;
+        $newTest->wave_id = $manualIncrementTestWaveTable;
         $newTest->title = $request->test_name;
         $newTest->token = $request->token;
         $newTest->description = $request->description;

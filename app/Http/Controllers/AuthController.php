@@ -41,14 +41,12 @@ class AuthController extends Controller
         $login = $this->authentication($request);
 
         if ($login === 1) {
-            if ($request->user()->hasVerifiedEmail()) {
-                if ($request->user()->role === 'admin')
+            if ($request->user()->role === 'admin')
                     return redirect()->route('admin.dashboard');
                 else if ($request->user()->role === 'user')
                     return redirect()->route('user.dashboard');
-            }
 
-            $request->user()->sendEmailVerificationNotification();
+            // $request->user()->sendEmailVerificationNotification();
 
             return redirect()->route("verification-notice");
         } else if ($login === 0) {

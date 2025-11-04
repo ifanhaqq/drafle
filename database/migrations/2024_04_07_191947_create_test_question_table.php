@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('test_question', function (Blueprint $table) {
+        Schema::create('test_questions', function (Blueprint $table) {
             $table->id('question_id');
             $table->bigInteger('wave_id');
             $table->enum('section', ['reading', 'listening', 'grammar']);
